@@ -36,7 +36,7 @@ class PREEncoder(nn.Module):
     def __init__(self, nz=32, ndf=64):
 
         super(PREEncoder, self).__init__()
-        self.nc = 2
+        self.nc = 1
 
         self.main = nn.Sequential(
             
@@ -75,7 +75,7 @@ class PREDecoder(nn.Module):
         :param ngf: the decoder (generator) filter factor
         """
         super(PREDecoder, self).__init__()
-        self.nc = 2
+        self.nc = 1
 
         self.main = nn.Sequential(
 
