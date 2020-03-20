@@ -1,3 +1,4 @@
+
 """
 _________________________________________________________________________________________________
                                                                                                  |
@@ -30,36 +31,9 @@ class UnFlatten(nn.Module):
         return input.view(input.size(0), size, 1, 1)
 
 
-class Normalize(nn.Module):
-    """
-        Simple module to normalize the input from [-scale, scale] to [0,1]
-    """
-
-    def __init__(self, scale):
-        super(Normalize, self).__init__()
-        self.scale = scale
-
-    def forward(self, input):
-        return (input + self.scale) / (2 * self.scale)
-
-
-class UnNormalize(nn.Module):
-    """
-        Simple module to scale the input from [0,1] to [-scale, scale]
-    """
-
-    def __init__(self, scale):
-        super(UnNormalize, self).__init__()
-        self.scale = scale
-
-    def forward(self, input):
-        return input * (2 * self.scale) - self.scale
-
-
 class VELEncoder(nn.Module):
     """
         Encoder architecture for the velocities
-
         We have two channels: one for the x-component, one for the y-component
     """
 
@@ -69,7 +43,7 @@ class VELEncoder(nn.Module):
         self.nc = 2
 
         self.main = nn.Sequential(
-            Normalize(VSCALE),
+            
             # input is (nc) x 64 x 64
             nn.Conv2d(self.nc, ndf, 4, 2, 1, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
@@ -114,23 +88,22 @@ class VELDecoder(nn.Module):
             # input is Z, going into a convolution
             nn.ConvTranspose2d(64, ngf * 8, 4, 1, 0, bias=False),
             nn.BatchNorm2d(ngf * 8),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf*8) x 4 x 4
             nn.ConvTranspose2d(ngf * 8, ngf * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 4),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf*4) x 8 x 8
             nn.ConvTranspose2d(ngf * 4, ngf * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 2),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf*2) x 16 x 16
             nn.ConvTranspose2d(ngf * 2, ngf, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf) x 32 x 32
             nn.ConvTranspose2d(ngf, self.nc, 4, 2, 1, bias=False),
-            nn.Sigmoid(),
-            UnNormalize(VSCALE)
+            nn.LeakyReLU(0.2, inplace=True)
             #   (nc) x 64 x 64
         )
 
