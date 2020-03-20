@@ -30,7 +30,6 @@ class UnFlatten(nn.Module):
 class SDFDecoder(nn.Module):
     """
         Decoder architecture for the signed distance functions.
-
         We have two channels: one for the obstacles, one for the emitters
     """
 
@@ -48,19 +47,19 @@ class SDFDecoder(nn.Module):
             UnFlatten(),
             nn.ConvTranspose2d(64, ngf * 8, 4, 1, 0, bias=False),
             nn.BatchNorm2d(ngf * 8),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #  (ngf*8) x 4 x 4
             nn.ConvTranspose2d(ngf * 8, ngf * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 4),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf*4) x 8 x 8
             nn.ConvTranspose2d(ngf * 4, ngf * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 2),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf*2) x 16 x 16
             nn.ConvTranspose2d(ngf * 2, ngf, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf),
-            nn.LeakyReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             #   (ngf) x 32 x 32
             nn.ConvTranspose2d(ngf, self.nc, 4, 2, 1, bias=False),
             nn.Tanh()
@@ -77,7 +76,6 @@ class SDFDecoder(nn.Module):
 class SDFEncoder(nn.Module):
     """
         Encoder architecture for the signed distance functions.
-
         We have two channels: one for the obstacles, one for the emitters
     """
 
