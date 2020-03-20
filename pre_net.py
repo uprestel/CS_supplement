@@ -112,7 +112,7 @@ class PREDiscriminator(nn.Module):
     """
 
     def __init__(self, nz=32, h_dim=128):
-        super(DENDiscriminator, self).__init__()
+        super(PREDiscriminator, self).__init__()
         self.main = nn.Sequential(
             nn.Linear(nz, h_dim),
             nn.ReLU(),
@@ -129,8 +129,8 @@ class PREDiscriminator(nn.Module):
 
 if __name__ == "__main__":
     # simple dimension debugging
-    Q_pre = DENEncoder()
-    P_pre = DENDecoder()
+    Q_pre = PREEncoder()
+    P_pre = PREDecoder()
 
     x = torch.randn(4, 1, 64, 64)
     z = Q_pre(x)
